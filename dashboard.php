@@ -81,13 +81,17 @@ include 'includes/header.php';
 
 <div class="container-fluid">
     <!-- Welcome Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
-            <p class="text-muted mb-0">Welcome back, <?= htmlspecialchars($current_user['name']) ?>!</p>
-        </div>
-        <div class="text-end">
-            <small class="text-muted"><?= date('l, F j, Y') ?></small>
+    <div class="page-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+                <p class="mb-0">Selamat datang kembali, <strong><?= htmlspecialchars($current_user['name']) ?></strong>! 👋</p>
+            </div>
+            <div class="text-end">
+                <div class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-calendar me-2"></i><?= date('l, F j, Y') ?>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -96,9 +100,9 @@ include 'includes/header.php';
         <div class="col-md-3">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-box fa-2x mb-3"></i>
+                    <i class="fas fa-box fa-3x mb-3"></i>
                     <h4><?= number_format($stats['total_products']) ?></h4>
-                    <p class="mb-0">Total Products</p>
+                    <p class="mb-0">Total Produk</p>
                 </div>
             </div>
         </div>
@@ -106,9 +110,9 @@ include 'includes/header.php';
         <div class="col-md-3">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-tags fa-2x mb-3"></i>
+                    <i class="fas fa-tags fa-3x mb-3"></i>
                     <h4><?= number_format($stats['total_categories']) ?></h4>
-                    <p class="mb-0">Categories</p>
+                    <p class="mb-0">Kategori</p>
                 </div>
             </div>
         </div>
@@ -116,9 +120,9 @@ include 'includes/header.php';
         <div class="col-md-3">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-receipt fa-2x mb-3"></i>
+                    <i class="fas fa-receipt fa-3x mb-3"></i>
                     <h4><?= number_format($stats['today_transactions']) ?></h4>
-                    <p class="mb-0">Today's Transactions</p>
+                    <p class="mb-0">Transaksi Hari Ini</p>
                 </div>
             </div>
         </div>
@@ -126,9 +130,9 @@ include 'includes/header.php';
         <div class="col-md-3">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-money-bill-wave fa-2x mb-3"></i>
+                    <i class="fas fa-money-bill-wave fa-3x mb-3"></i>
                     <h4><?= formatCurrency($stats['today_revenue']) ?></h4>
-                    <p class="mb-0">Today's Revenue</p>
+                    <p class="mb-0">Pendapatan Hari Ini</p>
                 </div>
             </div>
         </div>
@@ -140,9 +144,9 @@ include 'includes/header.php';
         <div class="col-md-4">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-calendar-alt fa-2x mb-3"></i>
+                    <i class="fas fa-calendar-alt fa-3x mb-3"></i>
                     <h4><?= number_format($stats['month_transactions']) ?></h4>
-                    <p class="mb-0">This Month's Transactions</p>
+                    <p class="mb-0">Transaksi Bulan Ini</p>
                 </div>
             </div>
         </div>
@@ -150,9 +154,9 @@ include 'includes/header.php';
         <div class="col-md-4">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-chart-line fa-2x mb-3"></i>
+                    <i class="fas fa-chart-line fa-3x mb-3"></i>
                     <h4><?= formatCurrency($stats['month_revenue']) ?></h4>
-                    <p class="mb-0">This Month's Revenue</p>
+                    <p class="mb-0">Pendapatan Bulan Ini</p>
                 </div>
             </div>
         </div>
@@ -160,11 +164,11 @@ include 'includes/header.php';
         <div class="col-md-4">
             <div class="card dashboard-stats">
                 <div class="card-body text-center">
-                    <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                    <i class="fas fa-exclamation-triangle fa-3x mb-3 <?= $stats['low_stock'] > 0 ? 'text-danger' : 'text-success' ?>"></i>
                     <h4 class="<?= $stats['low_stock'] > 0 ? 'text-danger' : 'text-success' ?>">
                         <?= number_format($stats['low_stock']) ?>
                     </h4>
-                    <p class="mb-0">Low Stock Items</p>
+                    <p class="mb-0">Stok Menipis</p>
                 </div>
             </div>
         </div>
@@ -175,12 +179,14 @@ include 'includes/header.php';
         <!-- Recent Sales -->
         <div class="col-md-8">
             <div class="table-container">
-                <h5 class="mb-3">
-                    <i class="fas fa-clock me-2"></i>Recent Sales
-                    <a href="sales_report.php" class="btn btn-outline-coffee btn-sm float-end">
-                        <i class="fas fa-eye me-1"></i>View All
+                <div class="section-header">
+                    <h5>
+                        <i class="fas fa-clock me-2"></i>Penjualan Terbaru
+                    </h5>
+                    <a href="sales_report.php" class="btn btn-outline-coffee btn-sm">
+                        <i class="fas fa-eye me-1"></i>Lihat Semua
                     </a>
-                </h5>
+                </div>
                 
                 <?php if ($recent_sales->rowCount() > 0): ?>
                     <div class="table-responsive">
@@ -188,11 +194,11 @@ include 'includes/header.php';
                             <thead class="table-light">
                                 <tr>
                                     <th>Invoice</th>
-                                    <th>Customer</th>
-                                    <th>Cashier</th>
-                                    <th>Items</th>
+                                    <th>Pelanggan</th>
+                                    <th>Kasir</th>
+                                    <th>Item</th>
                                     <th>Total</th>
-                                    <th>Date</th>
+                                    <th>Tanggal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -201,7 +207,7 @@ include 'includes/header.php';
                                     <td><strong><?= htmlspecialchars($sale['invoice_number']) ?></strong></td>
                                     <td><?= !empty($sale['customer_name']) ? htmlspecialchars($sale['customer_name']) : '-' ?></td>
                                     <td><?= htmlspecialchars($sale['cashier_name'] ?? '-') ?></td>
-                                    <td><span class="badge bg-info"><?= $sale['total_items'] ?> items</span></td>
+                                    <td><span class="badge bg-info"><?= $sale['total_items'] ?> item</span></td>
                                     <td><strong class="text-success"><?= formatCurrency($sale['final_amount']) ?></strong></td>
                                     <td><small><?= formatDate($sale['created_at'], 'M j, H:i') ?></small></td>
                                 </tr>
@@ -210,9 +216,10 @@ include 'includes/header.php';
                         </table>
                     </div>
                 <?php else: ?>
-                    <div class="text-center py-4">
-                        <i class="fas fa-receipt fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">No recent sales found</p>
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <h4>Tidak Ada Penjualan Terbaru</h4>
+                        <p>Mulai melakukan penjualan untuk melihatnya di sini</p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -222,9 +229,12 @@ include 'includes/header.php';
         <div class="col-md-4">
             <!-- Top Products -->
             <div class="table-container mb-4">
-                <h5 class="mb-3">
-                    <i class="fas fa-trophy me-2"></i>Top Products (30 days)
-                </h5>
+                <div class="section-header">
+                    <h5>
+                        <i class="fas fa-trophy me-2"></i>Produk Terlaris
+                    </h5>
+                    <small class="text-muted">30 hari</small>
+                </div>
                 
                 <?php if ($top_products->rowCount() > 0): ?>
                     <div class="list-group list-group-flush">
@@ -239,37 +249,41 @@ include 'includes/header.php';
                             </div>
                             <div class="text-end">
                                 <div class="fw-bold text-success"><?= formatCurrency($product['total_revenue']) ?></div>
-                                <small class="text-muted"><?= $product['total_sold'] ?> sold</small>
+                                <small class="text-muted"><?= $product['total_sold'] ?> terjual</small>
                             </div>
                         </div>
                         <?php $rank++; endwhile; ?>
                     </div>
                 <?php else: ?>
-                    <div class="text-center py-4">
-                        <i class="fas fa-trophy fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">No sales data available</p>
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <h4>Tidak Ada Data Penjualan</h4>
+                        <p>Data penjualan akan muncul di sini</p>
                     </div>
                 <?php endif; ?>
             </div>
 
             <!-- Quick Actions -->
             <div class="table-container">
-                <h5 class="mb-3">
-                    <i class="fas fa-bolt me-2"></i>Quick Actions
-                </h5>
+                <div class="section-header">
+                    <h5>
+                        <i class="fas fa-bolt me-2"></i>Aksi Cepat
+                    </h5>
+                </div>
                 
                 <div class="d-grid gap-2">
                     <?php if (in_array($current_user['role'], ['admin', 'kasir'])): ?>
                     <a href="pos.php" class="btn btn-coffee">
-                        <i class="fas fa-cash-register me-2"></i>New Sale
+                        <i class="fas fa-cash-register me-2"></i>Penjualan Baru
                     </a>
                     <?php endif; ?>
                     
                     <?php if ($current_user['role'] == 'admin'): ?>
-                    <a href="products.php" class="btn btn-outline-coffee"><i class="fas fa-box me-2"></i>Manage Products</a>
-                    <a href="categories.php" class="btn btn-outline-coffee"><i class="fas fa-tags me-2"></i>Manage Categories</a>
-                    <a href="stock.php" class="btn btn-outline-coffee"><i class="fas fa-warehouse me-2"></i>Stock Management</a>
-                    <a href="sales_report.php" class="btn btn-outline-coffee"><i class="fas fa-chart-line me-2"></i>Sales Report</a>
+                    <a href="products.php" class="btn btn-outline-coffee"><i class="fas fa-box me-2"></i>Kelola Produk</a>
+                    <a href="categories.php" class="btn btn-outline-coffee"><i class="fas fa-tags me-2"></i>Kelola Kategori</a>
+                    <a href="suppliers.php" class="btn btn-outline-coffee"><i class="fas fa-truck me-2"></i>Kelola Supplier</a>
+                    <a href="stock.php" class="btn btn-outline-coffee"><i class="fas fa-warehouse me-2"></i>Kelola Stok</a>
+                    <a href="sales_report.php" class="btn btn-outline-coffee"><i class="fas fa-chart-line me-2"></i>Laporan Penjualan</a>
                     <?php endif; ?>
                 </div>
             </div>

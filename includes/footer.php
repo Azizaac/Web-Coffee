@@ -21,14 +21,14 @@
         // Additional JavaScript functions for better UX
         
         // Confirm delete actions
-        function confirmDelete(message = 'Are you sure you want to delete this item?') {
+        function confirmDelete(message = 'Apakah Anda yakin ingin menghapus item ini?') {
             return confirm(message);
         }
         
         // Show loading state
         function showLoading(button) {
             const originalText = button.innerHTML;
-            button.innerHTML = '<span class="loading"></span> Processing...';
+            button.innerHTML = '<span class="loading"></span> Memproses...';
             button.disabled = true;
             
             setTimeout(() => {
@@ -120,10 +120,14 @@
             }, duration);
         }
         
-        // Form validation enhancement
+        // Form validation enhancement - SKIP forms with IDs (they have custom handlers)
         function enhanceFormValidation() {
-            const forms = document.querySelectorAll('form');
+            // Skip all forms with IDs (productForm, categoryForm, userForm, stockForm, pos-form, etc)
+            const forms = document.querySelectorAll('form:not([id])');
             forms.forEach(form => {
+                // Double check - skip if form has any ID
+                if (form.id) return;
+                
                 form.addEventListener('submit', function(e) {
                     const requiredFields = form.querySelectorAll('[required]');
                     let isValid = true;
@@ -137,9 +141,11 @@
                         }
                     });
                     
+                    // ONLY prevent if invalid
                     if (!isValid) {
                         e.preventDefault();
-                        showNotification('Please fill all required fields', 'danger');
+                        showNotification('Silakan isi semua field yang wajib', 'danger');
+                        return false;
                     }
                 });
                 

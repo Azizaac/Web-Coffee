@@ -9,7 +9,7 @@ define('DB_CHARSET', 'utf8mb4');
 // Application Configuration
 define('APP_NAME', 'SIM Coffee Shop');
 define('APP_VERSION', '1.0.0');
-define('BASE_URL', 'http://localhost/Web Coffee/');
+
 
 // Session Configuration
 if (session_status() === PHP_SESSION_NONE) {
@@ -39,7 +39,14 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES => false,   // ✅ penting untuk insert/update
             ]);
         } catch(PDOException $exception) {
-            die("Connection error: " . $exception->getMessage());
+            // Clear any output before error
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
+            if (!headers_sent()) {
+                header("Content-Type: text/html; charset=UTF-8");
+            }
+            die("Connection error: " . htmlspecialchars($exception->getMessage()));
         }
 
         return $this->conn;
@@ -60,7 +67,15 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: login.php');
+        // Clear output buffers before redirect
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        if (!headers_sent()) {
+            header('Location: login.php');
+            header("Connection: close");
+            flush();
+        }
         exit();
     }
 }
@@ -68,7 +83,15 @@ function requireLogin() {
 function requireAdmin() {
     requireLogin();
     if ($_SESSION['user_role'] !== 'admin') {
-        header('Location: dashboard.php');
+        // Clear output buffers before redirect
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        if (!headers_sent()) {
+            header('Location: dashboard.php');
+            header("Connection: close");
+            flush();
+        }
         exit();
     }
 }
@@ -76,7 +99,15 @@ function requireAdmin() {
 function requireKasir() {
     requireLogin();
     if (!in_array($_SESSION['user_role'], ['admin', 'kasir'])) {
-        header('Location: login.php');
+        // Clear output buffers before redirect
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        if (!headers_sent()) {
+            header('Location: login.php');
+            header("Connection: close");
+            flush();
+        }
         exit();
     }
 }

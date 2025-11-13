@@ -1,0 +1,42 @@
+# PHP
+*.log
+*.cache
+.htaccess.local
+php.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Environment/config files (jika ada)
+.env
+config.local.php
+
+# Uploads (uncomment jika tidak ingin commit gambar produk)
+# uploads/products/*
+# !uploads/products/.gitkeep
+
+# Database dumps (kecuali schema)
+*.sql
+!database_clean.sql
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
